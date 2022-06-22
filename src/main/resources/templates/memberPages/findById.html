@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>findById</title>
+</head>
+<body>
+  <h2> 상세조회 </h2>
+  <table>
+    <tr>
+        <td>Email</td>
+        <td th:text="${memberDTO.memberEmail}">memberEmail</td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td th:text="${memberDTO.memberName}">memberName</td>
+    </tr>
+      <tr>
+          <td>Age</td>
+          <td th:text="${memberDTO.memberAge}">memberAge</td>
+      </tr>
+      <tr>
+          <td>PhoneNumber</td>
+          <td th:text="${memberDTO.memberPhone}">memberPhone</td>
+      </tr>
+  </table>
+</body>
+</html>

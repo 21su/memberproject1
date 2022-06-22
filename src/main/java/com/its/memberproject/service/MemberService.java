@@ -35,6 +35,12 @@ public class MemberService {
     }
 
     public boolean login(MemberDTO memberDTO) {
+        /**
+         *  login.html 에서 이메일, 비번을 받아오고
+         *  DB로 부터 해당 이메일의 정보를 가져와서
+         *  입력받은 비번과 DB에서 조회한 비번의 일치여부를 판단하여
+         *  일치하면 로그인 성공, 일치하지 않으면 로그인 실패로 처리
+         */
         Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
         System.out.println(byMemberEmail);
         if(byMemberEmail.isPresent()){
