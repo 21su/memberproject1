@@ -35,7 +35,11 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute MemberDTO memberDTO){
-        memberService.login(memberDTO);
-        return "index";
+        boolean result = memberService.login(memberDTO);
+        if(result){
+            return "/memberPages/main";
+        }else {
+            return "index";
+        }
     }
 }
