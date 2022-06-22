@@ -34,15 +34,13 @@
       <th>Name</th>
       <th>상세조회</th>
       <th>삭제</th>
-      <th>조회</th>
     </tr>
     <tr th:each="member : ${memberList}">
-      <td th:text="${member.id}">Id</td>
-      <td><span th:text="${member.memberEmail}">email</span></td>
+      <td th:text="${member.id}"></td>
+      <td><a th:onclick="|ajax1(${member.id})|"><div th:text="${member.memberEmail}"> Email </div></a></td>
       <td th:text="${member.memberName}">Name</td>
       <td><a th:href="@{|/member/${member.id}|}">상세조회</a></td>
       <td><a th:href="@{|/member/delete/${member.id}|}">삭제</a></td>
-      <td><button th:onclick="|ajax1(${member.id})|">조회</button> </td>
     </tr>
   </table>
 <p id="result"></p>
