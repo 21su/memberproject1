@@ -3,6 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>list</title>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script>
+  function ajax1(id){
+      $.ajax({
+        type: "get",
+        url: "/member/ajax/" + id,
+        dataType: "json",
+        success: function (result){
+          const text = document.getElementById("result");
+          let value = "<table><tr><td>Email</td><td>"+result.memberEmail+"</td></tr>";
+          value += "<tr><td>Name</td><td>"+result.memberName+"</td></tr>";
+          value += "<tr><td>Age</td><td>"+result.memberAge+"</td></tr>";
+          value += "<tr><td>PhoneNumber</td><td>"+result.memberPhone+"</td></tr></table>";
+          text.innerHTML = value;
+        },error: function (){
+          alert("에러");
+        }
+      });
+      }
+  </script>
 </head>
 <body>
   <h2>List</h2>
@@ -11,20 +32,19 @@
       <th>#</th>
       <th>Email</th>
       <th>Name</th>
-      <th>Age</th>
-      <th>Phone</th>
       <th>상세조회</th>
       <th>삭제</th>
+      <th>조회</th>
     </tr>
     <tr th:each="member : ${memberList}">
       <td th:text="${member.id}">Id</td>
-      <td th:text="${member.memberEmail}">email</td>
+      <td><span th:text="${member.memberEmail}">email</span></td>
       <td th:text="${member.memberName}">Name</td>
-      <td th:text="${member.memberAge}">Age</td>
-      <td th:text="${member.memberPhone}">Phone</td>
-      <td><a th:href="|/member/${member.id}|">상세조회</a></td>
-      <td><a th:href="|/member/delete/${member.id}|">삭제</a></td>
+      <td><a th:href="@{|/member/${member.id}|}">상세조회</a></td>
+      <td><a th:href="@{|/member/delete/${member.id}|}">삭제</a></td>
+      <td><button th:onclick="|ajax1(${member.id})|">조회</button> </td>
     </tr>
   </table>
+<p id="result"></p>
 </body>
 </html>

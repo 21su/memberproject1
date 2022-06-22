@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -34,9 +35,12 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute MemberDTO memberDTO){
-        boolean result = memberService.login(memberDTO);
-        if(result){
+    public String login(@ModelAttribute MemberDTO memberDTO,
+                        HttpSession session){
+        MemberDTO loginDTO = memberService.login(memberDTO);
+        if(loginDTO != null){
+            session.setAttribute("loginEmail", loginDTO.getMemberEmail());
+            session.setAttribute("id", loginDTO.getId());
             return "/memberPages/main";
         }else {
             return "index";
@@ -56,5 +60,11 @@ public class MemberController {
         MemberDTO memberDTO = memberService.findById(id);
         model.addAttribute("memberDTO", memberDTO);
         return "/memberPages/findById";
+    }
+
+    @GetMapping("/ajax/{id}")
+    public @ResponseBody MemberDTO findAjax(@PathVariable("id") Long id){
+        MemberDTO memberDTO = memberService.findById(id);
+        return memberDTO;
     }
 }

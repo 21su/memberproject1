@@ -34,7 +34,7 @@ public class MemberService {
         }
     }
 
-    public boolean login(MemberDTO memberDTO) {
+    public MemberDTO login(MemberDTO memberDTO) {
         /**
          *  login.html 에서 이메일, 비번을 받아오고
          *  DB로 부터 해당 이메일의 정보를 가져와서
@@ -46,12 +46,12 @@ public class MemberService {
         if(byMemberEmail.isPresent()){
             MemberDTO loginDTO = MemberDTO.toDTO(byMemberEmail.get());
             if(loginDTO.getMemberPassword().equals(memberDTO.getMemberPassword())){
-                return true;
+                return loginDTO;
             }else{
-                return false;
+                return null;
             }
         }else{
-            return false;
+            return null;
         }
     }
 

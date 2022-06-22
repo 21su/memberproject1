@@ -18,12 +18,17 @@ public class TestClass {
     @Autowired
     private MemberService memberService;
 
+    public MemberDTO newMember() {
+        MemberDTO memberDTO = new MemberDTO("test@test.email", "testpassword", "testname", 0, "testphone");
+        return memberDTO;
+    }
+
     @Test
     @Transactional
     @Rollback(value = true)
     @DisplayName("save 테스트")
     public void saveTest(){
-        MemberDTO memberDTO = new MemberDTO("test@test.email","testpassword","testname",0,"testphone");
+        MemberDTO memberDTO = newMember();
         Long id = memberService.save(memberDTO);
         MemberDTO resultDTO = memberService.findById(id);
         System.out.println(resultDTO);
@@ -35,11 +40,11 @@ public class TestClass {
     @Rollback(value = true)
     @DisplayName("login 테스트")
     public void loginTest(){
-        MemberDTO memberDTO = new MemberDTO("test@test.email","testpassword","testname",0,"testphone");
+        MemberDTO memberDTO = newMember();
         memberService.save(memberDTO);
         MemberDTO loginDTO = new MemberDTO("test@test.email","testpassword");
-        boolean result = memberService.login(loginDTO);
-        assertThat(result).isTrue();
+        MemberDTO resultDTO = memberService.login(loginDTO);
+        assertThat(resultDTO).isNotNull();
     }
 
     @Test
