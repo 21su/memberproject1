@@ -10,6 +10,8 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 public class TestClass {
@@ -38,5 +40,18 @@ public class TestClass {
         MemberDTO loginDTO = new MemberDTO("test@test.email","testpassword");
         boolean result = memberService.login(loginDTO);
         assertThat(result).isTrue();
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("findAll 테스트")
+    public void findAllTest(){
+        for (int i = 0; i < 3; i++){
+            MemberDTO memberDTO = new MemberDTO("test@test.email" + i,"testpassword" + i,"testname" + i,0,"testphone" + i);
+            memberService.save(memberDTO);
+        }
+        List<MemberDTO> memberDTOList = memberService.findAll();
+        assertThat(memberDTOList.size()).isEqualTo(3);
     }
 }

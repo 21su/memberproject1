@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,5 +47,14 @@ public class MemberService {
         }else{
             return false;
         }
+    }
+
+    public List<MemberDTO> findAll() {
+        List<MemberEntity> entityList = memberRepository.findAll();
+        List<MemberDTO> memberDTOList = new ArrayList<>();
+        for(int i = 0; i < entityList.size(); i++){
+            memberDTOList.add(MemberDTO.toDTO(entityList.get(i)));
+        }
+        return memberDTOList;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -41,5 +43,11 @@ public class MemberController {
         }else {
             return "index";
         }
+    }
+
+    @GetMapping("/")
+    public String list(){
+        List<MemberDTO> memberDTOList = memberService.findAll();
+        return "/memberPages/list";
     }
 }
