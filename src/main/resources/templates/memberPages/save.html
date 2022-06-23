@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>save</title>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script th:inline="javascript">
     const  emailDuplicate = () =>{
       const email = document.getElementById("memberEmail").value;
@@ -14,11 +16,16 @@
         data: {
           "memberEmail": email
         },success: function (result){
-          if(result == "ok"){
-            checkResult.innerHTML = "사용 가능합니다."
-            checkResult.style.color = "green";
+          if(email != "") {
+            if (result == "ok") {
+              checkResult.innerHTML = "사용 가능합니다."
+              checkResult.style.color = "green";
+            } else {
+              checkResult.innerHTML = "중복된 아이디입니다."
+              checkResult.style.color = "red";
+            }
           }else{
-            checkResult.innerHTML = "중복된 아이디입니다."
+            checkResult.innerHTML = "아이디를 입력해주세요."
             checkResult.style.color = "red";
           }
         },error: function (){
