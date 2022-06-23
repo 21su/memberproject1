@@ -1,13 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>save</title>
+  <script th:inline="javascript">
+    const  emailDuplicate = () =>{
+      const email = document.getElementById("memberEmail").value;
+      const checkResult = document.getElementById("email-dup-result");
+      $.ajax({
+        type: "post",
+        url: "/member/emailCheck",
+        dataType: "text",
+        data: {
+          "memberEmail": email
+        },success: function (result){
+          if(result == "ok"){
+            checkResult.innerHTML = "사용 가능합니다."
+            checkResult.style.color = "green";
+          }else{
+            checkResult.innerHTML = "중복된 아이디입니다."
+            checkResult.style.color = "red";
+          }
+        },error: function (){
+          alert("ajax 실패");
+        }
+      });
+    }
+  </script>
 </head>
 <body>
 <h2>회원가입</h2>
   <form method="post" action="/member/save">
-    <p>Email: <input type="text" name="memberEmail"></p>
+    <p>Email: <input type="text" id="memberEmail" name="memberEmail" onblur="emailDuplicate()"></p>
+    <span id="email-dup-result"></span>
     <p>Password: <input type="password" name="memberPassword"></p>
     <p>Name: <input type="text" name="memberName"></p>
     <p>Age: <input type="text" name="memberAge"></p>

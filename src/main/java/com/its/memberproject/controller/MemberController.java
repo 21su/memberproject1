@@ -4,6 +4,8 @@ package com.its.memberproject.controller;
 import com.its.memberproject.dto.MemberDTO;
 import com.its.memberproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -66,5 +68,50 @@ public class MemberController {
     public @ResponseBody MemberDTO findAjax(@PathVariable("id") Long id){
         MemberDTO memberDTO = memberService.findById(id);
         return memberDTO;
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id){
+        memberService.delete(id);
+        return "redirect:/member/";
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity adelete(@PathVariable("id") Long id){
+        memberService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/update")
+    public String updateForm(HttpSession session,
+                             Model model){
+        Long id = (Long) session.getAttribute("id");
+        MemberDTO updateDTO = memberService.findById(id);
+        model.addAttribute("updateDTO", updateDTO);
+        return "/memberPages/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute MemberDTO memberDTO){
+        memberService.update(memberDTO);
+        return "redirect:/member/update";
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity aupdate(@ModelAttribute MemberDTO memberDTO){
+        memberService.update(memberDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/mypage")
+    public String mypage (){
+        return "/memberPages/mypage";
+    }
+
+    // 이메일 중복체크
+    @PostMapping("/emailCheck")
+    public @ResponseBody String emailCheck(@RequestParam String memberEmail){
+        String checkResult = memberService.emailCheck(memberEmail);
+        return checkResult;
     }
 }

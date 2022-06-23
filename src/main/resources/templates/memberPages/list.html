@@ -5,7 +5,7 @@
     <title>list</title>
   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script>
+  <script th:inline="javascript">
   function ajax1(id){
       $.ajax({
         type: "get",
@@ -23,6 +23,18 @@
         }
       });
       }
+  const adelete = (id) => {
+    $.ajax({
+      type: "delete",
+      url: "/member/"+id,
+      dataType: "text",
+      success: function () { // status code = 200
+        location.href = "/member/";
+      }, error: function () {
+        alert("ajax 실패");
+      }
+    });
+  }
   </script>
 </head>
 <body>
@@ -33,6 +45,7 @@
       <th>Email</th>
       <th>Name</th>
       <th>상세조회</th>
+      <th>ajax삭제</th>
       <th>삭제</th>
     </tr>
     <tr th:each="member : ${memberList}">
@@ -40,6 +53,7 @@
       <td><a th:onclick="|ajax1(${member.id})|"><div th:text="${member.memberEmail}"> Email </div></a></td>
       <td th:text="${member.memberName}">Name</td>
       <td><a th:href="@{|/member/${member.id}|}">상세조회</a></td>
+      <td><button th:onclick="|adelete(${member.id})|">ajax삭제</button> </td>
       <td><a th:href="@{|/member/delete/${member.id}|}">삭제</a></td>
     </tr>
   </table>

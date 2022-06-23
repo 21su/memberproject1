@@ -5,7 +5,6 @@ import com.its.memberproject.dto.MemberDTO;
 import com.its.memberproject.entity.MemberEntity;
 import com.its.memberproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -62,5 +61,23 @@ public class MemberService {
             memberDTOList.add(MemberDTO.toDTO(entityList.get(i)));
         }
         return memberDTOList;
+    }
+
+    public void delete(Long id) {
+        memberRepository.deleteById(id);
+    }
+
+    public void update(MemberDTO memberDTO) {
+        MemberEntity memberEntity = MemberEntity.toUpdateEntity(memberDTO);
+        memberRepository.save(memberEntity).getId();
+    }
+
+    public String emailCheck(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if(optionalMemberEntity.isEmpty()){
+            return "ok";
+        }else{
+            return "no";
+        }
     }
 }

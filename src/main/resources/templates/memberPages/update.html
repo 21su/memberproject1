@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <title>update</title>
+    <script th:inline="javascript">
+        const aupdate = () => {
+            const pw = [[${updateDTO.memberPassword}]];
+            const pwCheck = document.getElementById("memberPassword").value;
+            const formData = $("form[name=updateForm]").serialize();
+            // const updateData = JSON.stringfy({
+            //      id: id,
+            //      memberEmail: memberEmail,
+            //      등등
+            // })
+            if(pw == pwCheck) {
+                $.ajax({
+                    type: "put",
+                    data: formData,
+                    url: "/member/update",
+                    //contentType: "application/json",
+                    dataType: "text",
+                    success: function () { // status code = 200
+                        location.href = "/member/update";
+                    }, error: function () {
+                        alert("ajax 실패");
+                    }
+                });
+            }else{
+                alert("비밀번호가 틀립니다.");
+            }
+        }
+        const update = () =>{
+            const pw = [[${updateDTO.memberPassword}]];
+            const pwCheck = document.getElementById("memberPassword").value;
+            if(pw == pwCheck){
+                updateForm.submit();
+            }
+            else{
+                alert("비밀번호가 틀립니다.");
+            }
+        }
+    </script>
+</head>
+<body>
+<form method="post" action="/member/update" name="updateForm">
+    <table>
+        <input type="hidden" name="id" id="id" th:value="${updateDTO.id}">
+        <tr>
+            <td>이메일: </td>
+            <td><input type="text" name="memberEmail" id="memberEmail" th:value="${updateDTO.memberEmail}" readonly></td>
+        </tr>
+        <tr>
+            <td>비밀번호: </td>
+            <td><input type="memberPassword"id="memberPassword"></td>
+            <input type="hidden" name="memberPassword" th:value="${updateDTO.memberPassword}">
+        </tr>
+        <tr>
+            <td>이름: </td>
+            <td><input type="text" name="memberName" id="memberName" th:value="${updateDTO.memberName}" readonly></td>
+        </tr>
+        <tr>
+            <td>나이: </td>
+            <td><input type="text" name="memberAge" id="memberAge" th:value="${updateDTO.memberAge}"></td>
+        </tr>
+        <tr>
+            <td>전화번호: </td>
+            <td><input type="text" name="memberPhone" id="memberPhone" th:value="${updateDTO.memberPhone}"></td>
+        </tr>
+        <tr>
+            <td><input type="button" th:onclick="update()" value="수정"><input type="button" value="ajax수정" onclick="aupdate()"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

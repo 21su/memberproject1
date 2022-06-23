@@ -59,4 +59,30 @@ public class TestClass {
         List<MemberDTO> memberDTOList = memberService.findAll();
         assertThat(memberDTOList.size()).isEqualTo(3);
     }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("delete 테스트")
+    public void deleteById(){
+        MemberDTO memberDTO = newMember();
+        Long id = memberService.save(memberDTO);
+        memberService.delete(id);
+        MemberDTO resultDTO = memberService.findById(id);
+        assertThat(resultDTO).isNull();
+    }
+
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("update 테스트")
+    public void updateTest(){
+        MemberDTO memberDTO = newMember();
+        Long id = memberService.save(memberDTO);
+        MemberDTO findDTO = memberService.findById(id);
+        memberDTO.setMemberName("업데이트이름");
+        memberService.update(findDTO);
+        MemberDTO resultDTO = memberService.findById(id);
+        assertThat(findDTO.getMemberName()).isEqualTo(resultDTO.getMemberName());
+    }
 }

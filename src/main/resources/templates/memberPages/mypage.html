@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mypage</title>
+</head>
+<body>
+  <h2>Mypage</h2>
+  id: <span th:text="${session['id']}"></span><br />
+  email: <span th:text="${session['loginEmail']}"></span><br />
+  <a href="/member/update">수정</a>
+</body>
+</html>
